@@ -1,0 +1,18 @@
+{
+	"bmi-installation" : null,
+	"compiler-frontend-variant" : "MSVC",
+	"compiler-id" : "MSVC",
+	"compiler-simulate-id" : "",
+	"config" : "Debug",
+	"cxx-modules" : {},
+	"dir-cur-bld" : "C:/Users/Denis/Desktop/PI/proiect/cmake-build-debug",
+	"dir-cur-src" : "C:/Users/Denis/Desktop/PI/proiect",
+	"dir-top-bld" : "C:/Users/Denis/Desktop/PI/proiect/cmake-build-debug",
+	"dir-top-src" : "C:/Users/Denis/Desktop/PI/proiect",
+	"exports" : [],
+	"forward-modules-from-target-dirs" : [],
+	"include-dirs" : [],
+	"language" : "CXX",
+	"linked-target-dirs" : [],
+	"module-dir" : "C:/Users/Denis/Desktop/PI/proiect/cmake-build-debug/CMakeFiles/proiect.dir"
+}
