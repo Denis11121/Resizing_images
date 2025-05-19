@@ -8,8 +8,10 @@ using namespace cv;
 using namespace std;
 
 unsigned char bilinearInterpolate(Mat img, float x, float y) {
+
     int x1=floor(x);
     int y1=floor(y);
+
     int x2=std::min(x1+1, img.cols-1);
     int y2=std::min(y1+1, img.rows-1);
 
@@ -29,6 +31,7 @@ Mat resizeBilinear(Mat input, int newWidth, int newHeight) {
 
     for (int y=0;y<newHeight;y++) {
         for (int x=0;x<newWidth;x++) {
+
             float srcX=x*scaleX;
             float srcY=y*scaleY;
             output.at<uchar>(y,x)=bilinearInterpolate(input,srcX,srcY);
@@ -38,6 +41,7 @@ Mat resizeBilinear(Mat input, int newWidth, int newHeight) {
 }
 
 float cubicInterpolate(float p[4], float x) {
+    //catmull-rom
     return p[1] + 0.5f * x * (p[2] - p[0] +
            x * (2*p[0] - 5*p[1] + 4*p[2] - p[3] +
            x * (3*(p[1] - p[2]) + p[3] - p[0])));
@@ -70,9 +74,9 @@ unsigned char bicubicInterpolate(Mat img, float x, float y) {
     }
 
     float value = cubicInterpolate(col, dy);
-    value = max(0.0f, min(255.0f, value));  // asigurare range [0,255]
+    value = max(0.0f, min(255.0f, value));
 
-    return (unsigned char)(value + 0.5f);  // rotunjire
+    return (unsigned char)(value + 0.5f);
 }
 
 
@@ -142,5 +146,34 @@ Mat resizeSubsamplingAverage(Mat input, int newWidth, int newHeight) {
         }
     }
 
+
     return output;
+}
+
+//Mean Absolute Error
+double calculateMAE(const Mat& img1, const Mat& img2) {
+    CV_Assert(img1.size() == img2.size() && img1.type() == img2.type());
+
+    double sumError = 0.0;
+    for (int y = 0; y < img1.rows; y++) {
+        for (int x = 0; x < img1.cols; x++) {
+            sumError += abs(img1.at<uchar>(y, x) - img2.at<uchar>(y, x));
+        }
+    }
+    return sumError / (img1.rows * img1.cols);
+}
+
+//Peak-Signal-to-Noise Ratio
+double calculatePSNR(const Mat& I1, const Mat& I2) {
+    Mat s1;
+    absdiff(I1, I2, s1);       // |I1 - I2|
+    s1.convertTo(s1, CV_32F);  // convert to float
+    s1 = s1.mul(s1);           // |I1 - I2|^2
+
+    Scalar s = sum(s1);        // sum of all elements
+
+    double mse = s.val[0] / (double)(I1.total()); //mean squared error
+    if (mse == 0) return INFINITY;
+    double psnr = 10.0 * log10((255 * 255) / mse);
+    return psnr;
 }
