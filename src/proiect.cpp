@@ -179,10 +179,6 @@ double calculatePSNR(const Mat& I1, const Mat& I2) {
 }
 
 //phase 4
-#include "proiect.h"
-#include <cmath>
-using namespace cv;
-using namespace std;
 
 // ----------- BILINEAR -----------
 Vec3b bilinearInterpolateColor(const Mat& img, float x, float y) {
